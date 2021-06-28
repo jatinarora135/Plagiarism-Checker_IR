@@ -7,27 +7,28 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-'''Preprocess the corpus'''
 l = {}
 def ppcorpus():
+    """Preprocess the corpus taking all .txt files in directory
+        and calls the preprocessing class for each of them"""
     files = [doc for doc in os.listdir() if (doc.endswith('.txt') and (doc!='store.txt' and doc!='temp.txt'))]
     for doc in files:
         l[doc] = pp.Preprocess(doc).trig
-    #print('a',l)
-    #store the pp corpus
 def storeCorpus():
+    """ Stores the preprocesed corpus in a text file
+        to avoid the computational load of preprocessing
+        every time"""
     target = open('store.txt', "w")
     target.write(str(l))
     target.close()
 def loadCorpus():
+    """Loads the preprocessed data"""
     ter = open('store.txt','r')
     s = ter.read()
     ter.close()
     l = eval(s)
     print('a',l)
-    
-#Calculate and Graphing Similarity
-#loadCorpus()
+
 master = Tk()
 master.title("Plagiarism Checker") #title of the window
 Label(master, text="File Name").grid(row=0)
@@ -41,11 +42,13 @@ e1.grid(row=0, column=1)
 t = Text(master, width=75, height=35) #text field to input text to be checked
 t.grid(row=1,column=1)
 def Prepro():
+    """ Calls the preprocessing functions"""
     ppcorpus()
     storeCorpus()
-#t.get(startindex [,endindex]) to access the input value in Text
 def helloCallBack(): #function that runs when we click the check button
-    #messagebox.showinfo("Say Hello", "Hello World")
+    """ Gets the data from input boxes and preprocesses it
+        adds the file to the corpus and finally graphs the
+        plagiarism percentage in form of bar graph"""
     s = t.get("1.0",END)
     r = e1.get()
     r = r+'.txt'
